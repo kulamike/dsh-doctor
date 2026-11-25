@@ -12,6 +12,7 @@ import { join } from 'node:path'
 import { resolveContext } from '../lib/context.mjs'
 import { collectChecks, summarizeDiag } from '../lib/checks.mjs'
 import { repair, takeSnapshot, restoreConfigs, guard } from '../lib/repair.mjs'
+import { checkSelfUpdate } from '../lib/selfupdate.mjs'
 import { readTail, tailLines, listSnapshots } from '../lib/host.mjs'
 import { renderStatus, renderRepair, renderLogs } from '../lib/report.mjs'
 
@@ -110,8 +111,17 @@ function cmdLogs(ctx, flags) {
   return 0
 }
 
-async function cmdSelftest() {
-  const mod = await import('../test/run.mjs')
+async function cmdSelfupdate(ctx, flags) {
+  const r = await checkSelfUpdate(ctx, { apply: !!flags.apply })
+  console.log(`核心版本    : ${r.coreVersion ?? '读不到'}（上次记录 ${r.lastCoreVersion || '无'}）`)
+  console.log(`版本变化    : ${r.coreChanged ? '是' : '否'}${r.firstRun ? '（首次记录）' : ''}`)
+  console.log(`自更新      : ${r.enabled ? '启用' : '禁用'}`)
+  console.log(`仓库        : ${r.repo?.isGit ? `${r.repo.remote} @ ${r.repo.branch} ${r.repo.head}${r.repo.dirty ? '（有未提交改动）' : ''}` : '不是 git 仓库'}`)
+  console.log(`结果        : ${r.note}`)
+  return r.coreChanged && !r.updated && flags.apply ? 1 : 0
+}
+
+async function cmdSelftest() {  const mod = await import('../test/run.mjs')
   const ok = await mod.runSelfTest()
   return ok ? 0 : 1
 }
@@ -121,6 +131,7 @@ function usage() {
   console.log('  status   [--json] [--verbose]')
   console.log('  repair   [--apply] [--restart] [--json] [--no-bridge]')
   console.log('  snapshot | rollback [--snapshot 名字]')
+  console.log('  selfupdate [--apply]   检查 DSH 版本变化并只更新本插件')
   console.log('  logs     [--which err|out|capture|rescue|bridge] [--lines 40]')
 }
 
@@ -136,6 +147,7 @@ async function main() {
       case 'snapshot': return cmdSnapshot(ctx)
       case 'rollback': return cmdRollback(ctx, flags)
       case 'logs': return cmdLogs(ctx, flags)
+      case 'selfupdate': return await cmdSelfupdate(ctx, flags)
       case 'selftest': return await cmdSelftest()
       case 'help': case '-h': case '--help': usage(); return 0
       default: usage(); return 2

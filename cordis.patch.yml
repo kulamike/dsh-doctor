@@ -16,3 +16,8 @@
         keepSnapshots: 30
         # 修复时是否顺带把桥接的 dsh.baseUrl 对齐到新端口（会重启桥接进程）
         syncBridge: true
+        # 跟随 DSH 更新自更新：DSH 核心版本变了就 git pull 本插件自己的仓库。
+        # 只动插件目录，**永不修改 DSH 版本、不动 profile 依赖、不跑 pnpm**。
+        # enabled: false = 只记录版本，什么都不做。
+        selfUpdate:
+          enabled: true

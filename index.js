@@ -17,6 +17,7 @@
 import { resolveContext } from './lib/context.mjs'
 import { collectChecks } from './lib/checks.mjs'
 import { repair, takeSnapshot, restoreConfigs } from './lib/repair.mjs'
+import { checkSelfUpdate, readState, writeState } from './lib/selfupdate.mjs'
 import { listSnapshots, readTail, tailLines } from './lib/host.mjs'
 import { renderStatus, renderRepair, renderLogs } from './lib/report.mjs'
 import { join } from 'node:path'
@@ -43,9 +44,57 @@ export function apply(ctx, rawConfig = {}) {
   const base = resolveContext(overrides)
   log(`profile=${base.profileDir} app=${base.appExe || '(没找到)'} node=${base.nodeExe}`)
 
+  // 跟随 DSH 更新：只在「核心版本变了」时动，且只 pull 这个插件自己的仓库。
+  // 绝不动 profile 的依赖版本，也不跑 pnpm —— 这条边界是硬约束。
+  if (base.selfUpdate?.enabled !== false) {
+    checkSelfUpdate(base, { apply: true })
+      .then((r) => {
+        if (r.coreChanged || r.firstRun) log(`跟随更新：${r.note}`)
+      })
+      .catch((e) => log(`跟随更新检查失败：${e?.message ?? e}`))
+  } else {
+    log('跟随更新：已禁用（selfUpdate.enabled=false），只记录版本')
+  }
+
   const register = (def) => {
     try { ctx.tools.register(def) } catch (e) { log(`注册 ${def.name} 失败：${e?.message ?? e}`) }
   }
+
+  register({
+    name: 'dsh__selfupdate',
+    description: '检查 DSH 核心版本有没有变；变了就只更新这个插件自己（git pull 本插件的仓库）。永远不会修改 DSH 的版本、也不会动 profile 的依赖。默认按配置执行，可传 mode 指定只看/强制拉取。',
+    parameters: {
+      type: 'object',
+      properties: {
+        mode: {
+          type: 'string',
+          enum: ['check', 'apply', 'disable', 'enable'],
+          description: 'check=只看不动；apply=允许拉取；disable/enable=改开关（写状态文件，不改配置）',
+        },
+      },
+      additionalProperties: false,
+    },
+    output: textOut({ type: 'object' }, (v) => v?.text || '（没有结果）'),
+    execute: async (args) => {
+      const mode = String(args?.mode || 'check')
+      if (mode === 'disable' || mode === 'enable') {
+        // 持久开关：写进状态文件，重启后依然有效；不碰 bundle 配置
+        writeState(base, { selfUpdateDisabled: mode === 'disable' })
+        return {
+          text: `自更新已${mode === 'enable' ? '启用' : '禁用'}（已写入状态文件，重启后仍有效；配置里的 selfUpdate.enabled 未改动）`,
+          ok: true,
+        }
+      }
+      const r = await checkSelfUpdate(base, { apply: mode === 'apply' })
+      const lines = [
+        `核心版本：${r.coreVersion ?? '读不到'}（上次记录：${r.lastCoreVersion || '无'}）`,
+        `仓库：${r.repo?.isGit ? `${r.repo.remote} @ ${r.repo.branch} ${r.repo.head}` : '不是 git 仓库'}`,
+        r.coreChanged ? '核心版本变了 → 触发跟随更新' : '核心版本没变',
+        r.note,
+      ]
+      return { text: lines.join('\n'), ok: true, result: r }
+    },
+  })
 
   register({
     name: 'dsh__status',

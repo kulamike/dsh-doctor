@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "DSH 急救箱",
-    "description": "给 DSH 体检并修复：进程/端口/HTTP 是否可用、核心与插件版本是否漂移、profile 配置有没有坏、桥接端口对不对得上。修复引擎不依赖 DSH —— DSH 起不来时双击桌面上的 repair.cmd 就能修。",
+    "description": "给 DSH 体检并修复：进程/端口/HTTP、核心与插件版本是否漂移、profile 配置有没有坏、桥接 dshReady 与端口对不对得上。修完自动复诊，报「修前 N 个故障 → 修后 N 个」。修复引擎只用 Node 标准库、不依赖 DSH —— DSH 起不来时双击桌面上的 repair.cmd 照样能修。",
     "detail": "docs/DETAIL.md"
   }
 }

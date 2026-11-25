@@ -145,3 +145,14 @@ test/run.mjs          故障注入自测
 ## License
 
 MIT
+
+## 跟随 DSH 更新（可关，绝不动 DSH 版本）
+
+DSH 每次升级，核心版本会变（`app.asar` 里那个）。插件在激活时对比一次：
+
+- **只有核心版本变了**才 `git pull` **它自己的仓库**；
+- **永不修改 DSH 版本、不动 profile 的 `@deepseek-ai/*` 依赖、不跑 pnpm**；
+- 目录有未提交改动时**拒绝拉取**，避免覆盖你正在改的东西；
+- 默认开启，`cordis.patch.yml` 里 `selfUpdate.enabled: false` 可关；也可以 `dsh__selfupdate mode=disable` 持久关掉；
+- 只看不动：`dsh__selfupdate`（默认 check），或命令行 `node bin/cli.mjs selfupdate [--apply]`；
+- 状态记在 `qq-agent/dsh-doctor-state.json`（上次核心版本 / 上次拉取结果）。

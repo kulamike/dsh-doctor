@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "DSH doctor",
-    "description": "Diagnoses DSH failures (process, port, HTTP, plugin version drift, broken profile config, bridge port mismatch) and repairs them. The repair engine runs without DSH, so repair.cmd on the desktop still works when DSH cannot start.",
+    "title": "DSH Doctor",
+    "description": "Diagnoses and repairs DSH: process/port/HTTP, core-vs-plugin version drift, broken profile config, and bridge dshReady plus port mismatch. Re-checks after every repair and reports failures before and after. The repair engine uses only Node's standard library, so repair.cmd on the desktop still works when DSH itself cannot start.",
     "detail": "docs/DETAIL.md"
   }
 }
