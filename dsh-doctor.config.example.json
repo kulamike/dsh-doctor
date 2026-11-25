@@ -1,0 +1,12 @@
+{
+  "_说明": "把这份复制成 dsh-doctor.config.json 放在包根目录（或 %DSH_HOME%\\dsh-doctor.config.json），引擎会读它。留空的项走自动发现。",
+  "profileDir": "",
+  "appExe": "",
+  "dshHome": "",
+  "bridgeHome": "",
+  "bridgePort": 3100,
+  "qqAgentDir": "",
+  "nodeExe": "",
+  "keepSnapshots": 30,
+  "syncBridge": true
+}

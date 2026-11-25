@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "DSH 急救箱",
+    "description": "给 DSH 体检并修复：进程/端口/HTTP 是否可用、核心与插件版本是否漂移、profile 配置有没有坏、桥接端口对不对得上。修复引擎不依赖 DSH —— DSH 起不来时双击桌面上的 repair.cmd 就能修。",
+    "detail": "docs/DETAIL.md"
+  }
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="DSH doctor">
+  <defs>
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6fed"/>
+      <stop offset="1" stop-color="#17408f"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 4 54 12v20c0 13-9.4 22.6-22 28C19.4 54.6 10 45 10 32V12Z" fill="url(#shield)"/>
+  <path d="M32 4 54 12v20c0 13-9.4 22.6-22 28C19.4 54.6 10 45 10 32V12Z" fill="none" stroke="#0d2a63" stroke-width="2"/>
+  <path d="M15 33h9l4-9 6 18 4-9h11" fill="none" stroke="#eaf2ff" stroke-width="3.2"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="47" cy="47" r="9" fill="#ffffff" stroke="#0d2a63" stroke-width="2"/>
+  <path d="M43.5 47h7M47 43.5v7" stroke="#17408f" stroke-width="3" stroke-linecap="round"/>
+</svg>

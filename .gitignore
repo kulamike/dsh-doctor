@@ -1,0 +1,18 @@
+# 依赖与产物
+node_modules/
+out/
+*.log
+
+# 本地覆盖配置（含本机路径，别提交）
+dsh-doctor.config.json
+
+# 修复工具自己留下的备份/快照
+*.bak-doctor-*
+*.bak-switchmodel-*
+snapshots/
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

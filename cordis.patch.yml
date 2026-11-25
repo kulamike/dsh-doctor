@@ -1,0 +1,18 @@
+# dsh-doctor 的装载行。
+# 只插一个宿主插件：它注册 dsh__status / dsh__repair / dsh__snapshot / dsh__rollback / dsh__logs 五个工具。
+# 真正的修复引擎在 lib/ 与 bin/ 里，不依赖 DSH，所以 DSH 挂了也能在命令行/桌面上跑。
+- insert:
+    - id: dsh-doctor
+      name: '@local/dsh-doctor'
+      config:
+        # 以下是「留空就自动发现」的路径，一般不用填。
+        profileDir: ''        # 默认 DSH_PROFILE_DIR 或 ~/.dsh/profiles/desktop
+        appExe: ''            # 默认自动找 DeepSeek Harness.exe
+        dshHome: ''           # 默认 ~/.dsh
+        bridgeHome: ''        # 默认在 D:\AAA\AI1\qq-bridge-* 里找带 config.json 的
+        bridgePort: 3100
+        qqAgentDir: ''        # 默认 <dshHome>\qq-agent
+        nodeExe: ''           # 默认用 DSH 自带 runtime node
+        keepSnapshots: 30
+        # 修复时是否顺带把桥接的 dsh.baseUrl 对齐到新端口（会重启桥接进程）
+        syncBridge: true

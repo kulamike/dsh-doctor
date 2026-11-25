@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "DSH doctor",
+    "description": "Diagnoses DSH failures (process, port, HTTP, plugin version drift, broken profile config, bridge port mismatch) and repairs them. The repair engine runs without DSH, so repair.cmd on the desktop still works when DSH cannot start.",
+    "detail": "docs/DETAIL.md"
+  }
+}

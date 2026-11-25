@@ -1,0 +1,47 @@
+{
+  "name": "@local/dsh-doctor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DSH 故障检测与修复：装进 DSH 后能诊断，退出 DSH 也能独立运行（双击 repair.cmd 一键修）",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "kulamike",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kulamike/dsh-doctor.git"
+  },
+  "homepage": "https://github.com/kulamike/dsh-doctor#readme",
+  "bugs": {
+    "url": "https://github.com/kulamike/dsh-doctor/issues"
+  },
+  "keywords": ["dsh-plugin", "deepseek-harness", "doctor", "rescue", "repair"],
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./lib/*": "./lib/*"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "bin",
+    "cordis.patch.yml",
+    "doctor.cmd",
+    "repair.cmd",
+    "dsh-doctor.config.example.json",
+    "locale/*.json",
+    "docs",
+    "README.md",
+    "icon.svg"
+  ],
+  "scripts": {
+    "selftest": "node test/run.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
