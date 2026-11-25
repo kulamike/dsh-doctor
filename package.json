@@ -1,6 +1,6 @@
 {
   "name": "@local/dsh-doctor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "DSH 故障检测与修复：装进 DSH 后能诊断，退出 DSH 也能独立运行（双击 repair.cmd 一键修）",
   "type": "module",
